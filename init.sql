@@ -8,23 +8,25 @@ CREATE TABLE IF NOT EXISTS regions
 
 CREATE TABLE IF NOT EXISTS countries
 (
-    country_id SMALLINT(2) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    country_id VARCHAR(2) PRIMARY KEY NOT NULL,
     country_name VARCHAR(40),
-    region_id INT
+    region_id INT UNSIGNED,
+
+    CONSTRAINT countr_reg_fk FOREIGN KEY (region_id) REFERENCES regions (region_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 
 CREATE TABLE IF NOT EXISTS locations
 (
-    location_id    SMALLINT(4) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    location_id    INT(4) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     street_address VARCHAR(40),
     postal_code    VARCHAR(12),
-    city           VARCHAR(30),
+    city           VARCHAR(30) NOT NULL,
     state_province VARCHAR(25),
-    country_id     SMALLINT(2) UNSIGNED,
+    country_id     VARCHAR(2),
 
-    FOREIGN KEY (country_id) REFERENCES countries (country_id)
+    CONSTRAINT loc_c_id_fk FOREIGN KEY (country_id) REFERENCES countries (country_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   AUTO_INCREMENT = 3300;
@@ -38,10 +40,10 @@ COMMIT;
 
 CREATE TABLE IF NOT EXISTS departments
 (
-    department_id   SMALLINT(4) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    department_id   INT(4) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     department_name VARCHAR(30) NOT NULL,
     manager_id      INT(6),
-    location_id     SMALLINT(4) UNSIGNED,
+    location_id     INT(4) UNSIGNED,
 
     CONSTRAINT dept_loc_fk FOREIGN KEY (location_id) REFERENCES locations (location_id)
 ) ENGINE = InnoDB
@@ -75,9 +77,9 @@ CREATE TABLE IF NOT EXISTS employees
     hire_date      DATE                              NOT NULL,
     job_id         VARCHAR(10)                       NOT NULL,
     salary         INT(8) CHECK (salary > 0),
-    commission_pct SMALLINT(2),
+    commission_pct INT(2),
     manager_id     INT(6),
-    department_id  SMALLINT(4) UNSIGNED,
+    department_id  INT(4) UNSIGNED,
 
     FOREIGN KEY emp_manager_fk (manager_id) REFERENCES employees (employee_id),
     FOREIGN KEY emp_dept_fk (department_id) REFERENCES departments (department_id)
@@ -94,7 +96,7 @@ CREATE TABLE IF NOT EXISTS job_history
     start_date    DATE   NOT NULL,
     end_date      DATE   NOT NULL,
     job_id        VARCHAR(10),
-    department_id SMALLINT(4) UNSIGNED,
+    department_id INT(4) UNSIGNED,
 
     CONSTRAINT jhist_emp_fk FOREIGN KEY (employee_id) REFERENCES employees (employee_id),
     CONSTRAINT jhist_dept_fk FOREIGN KEY (department_id) REFERENCES departments (department_id),
