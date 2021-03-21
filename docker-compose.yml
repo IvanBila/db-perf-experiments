@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+
+  mysql:
+    image: mysql:5.7
+    command: mysqld --sql_mode='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION,ONLY_FULL_GROUP_BY' # Add ONLY_FULL_GROUP_BY
+    restart: unless-stopped # https://docs.docker.com/config/containers/start-containers-automatically/
+    ports:
+      - 3306:3306
+      - 33060:33060
+    env_file: .docker-env
+    volumes:
+      - mysql-data:/var/lib/mysql
+      
+volumes:
+  mysql-data:
