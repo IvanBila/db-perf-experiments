@@ -36,8 +36,6 @@ SET @@auto_increment_increment = 100;
 SET @@auto_increment_increment = 1;
 COMMIT;
 
-
-
 CREATE TABLE IF NOT EXISTS departments
 (
     department_id   SMALLINT(4) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
